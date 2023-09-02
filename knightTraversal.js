@@ -1,3 +1,18 @@
+// Create the game board
+function createBoard() {
+  const board = []; // Create an empty array
+  // Loop 8 times for each row
+  for (i = 0; i < 8; i++) {
+    const row = []; // Create an empty array for each row
+    // Loop 8 times for each cell
+    for (j = 0; j < 8; j++) {
+      row.push(0); // Add a 0 for each cell
+    }
+    board.push(row); // Add each row to the board
+  }
+  return board; // Return the 8x8 array
+}
+
 /*
 PSEUDOCODE:
 FUNCTION createBoard():
