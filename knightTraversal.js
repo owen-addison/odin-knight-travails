@@ -1,103 +1,77 @@
-// Create the game board
+/**
+ * Creates an 8x8 game board.
+ * @returns {Array} An 8x8 array initialized with zeros.
+ */
 function createBoard() {
-  const board = []; // Create an empty array
-  // Loop 8 times for each row
-  for (i = 0; i < 8; i++) {
-    const row = []; // Create an empty array for each row
-    // Loop 8 times for each cell
-    for (j = 0; j < 8; j++) {
-      row.push(0); // Add a 0 for each cell
+  const board = [];
+  for (let i = 0; i < 8; i++) {
+    const row = [];
+    for (let j = 0; j < 8; j++) {
+      row.push(0);
     }
-    board.push(row); // Add each row to the board
+    board.push(row);
   }
-  return board; // Return the 8x8 array
+  return board;
 }
 
+/**
+ * Finds the shortest path for a knight to move from start to end on a chessboard.
+ * @param {Array} start - The starting position [x,y].
+ * @param {Array} end - The ending position [x,y].
+ * @returns {Array} An array of positions representing the shortest path or "No path found".
+ */
 function knightMoves(start, end) {
   const queue = [];
   const visited = new Set();
-  queue.push([start, [start]]); // Enqueue the starting position and the path taken so far
+  queue.push([start, [start]]);
 
   while (queue.length > 0) {
-    const currentPosition = queue.shift()[0]; // The start/move position
-    const path = queue[1]; // Array with the current path
+    const [currentPosition, path] = queue.shift();
 
-    if ((currentPosition = end)) {
-      return path; // Found the shortest path
+    if (currentPosition[0] === end[0] && currentPosition[1] === end[1]) {
+      return path;
     }
 
     placeKnight(currentPosition).forEach((move) => {
-      // If move has not been visited
-      if (!visited.has(move)) {
-        visited.add(move);
-        const newPath = path.concat([move]); // Append the new move to the current path
+      const moveStr = move.toString();
+      if (!visited.has(moveStr)) {
+        visited.add(moveStr);
+        const newPath = path.concat([move]);
         queue.push([move, newPath]);
       }
     });
   }
 
-  return "No path found"; // If we exit the loop without returning, no path exists
+  return "No path found";
 }
 
+/**
+ * Determines all valid moves for a knight from a given position.
+ * @param {Array} position - The current position [x,y].
+ * @returns {Array} An array of valid moves.
+ */
 function placeKnight(position) {
-  const x = currentPosition[0];
-  const y = currentPosition[1];
+  const x = position[0];
+  const y = position[1];
   const allPossibleMoves = [
-    (2, 1),
-    (1, 2),
-    (-1, 2),
-    (-2, 1),
-    (-2, -1),
-    (-1, -2),
-    (1, -2),
-    (2, -1),
+    [2, 1],
+    [1, 2],
+    [-1, 2],
+    [-2, 1],
+    [-2, -1],
+    [-1, -2],
+    [1, -2],
+    [2, -1],
   ];
   const validMoves = [];
 
   allPossibleMoves.forEach((move) => {
-    const new_x = move[0];
-    const new_y = move[1];
-    if (0 <= new_x < 8 && 0 <= new_y < 8) {
-      validMoves.push(move);
+    const new_x = x + move[0];
+    const new_y = y + move[1];
+    if (0 <= new_x && new_x < 8 && 0 <= new_y && new_y < 8) {
+      validMoves.push([new_x, new_y]);
     }
   });
 
   return validMoves;
 }
-
-/*
-PSEUDOCODE:
-FUNCTION createBoard():
-  board = 8x8 array filled with 0s
-  RETURN board
-
-FUNCTION knightMoves(start, end):
-  queue = []
-  visited = new Set()
-  queue.enqueue([start, [start]]) // Enqueue the starting position and the path taken so far
-
-  WHILE queue is not empty:
-    currentPosition, path = queue.dequeue();
-
-    IF currentPosition = end:
-      RETURN path // Found the shortest path
-
-    FOR each move in placeKnight(currentPosition): // Get all possible moves from current position
-      IF move is not in visited:
-        visited.add(move)
-        newPath = path + [move] // Append the new move to the current path
-        queue.enqueue([move, newPath])
-
-  RETURN "No path found" // If we exit the loop without returning, no path exists
-
-FUNCTION placeKnight(position):
-  x, y = position
-  allPossibleMoves = [(2,1), (1,2), (-1,2), (-2,1), (-2,-1), (-1,-2), (1,-2), (2,-1)]
-  validMoves = []
-
-  FOR each move in possibleMoves:
-    IF move is within the board boundaries and not an obstacle:
-      validMoves.append(move);
-
-  RETURN validMoves
-*/
