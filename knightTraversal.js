@@ -75,3 +75,29 @@ function placeKnight(position) {
 
   return validMoves;
 }
+
+/**
+ * Testing
+ */
+function codeDriver(start, end) {
+  const finalPath = knightMoves(start, end); // Array with final path
+
+  if (Array.isArray(finalPath)) {
+    // Print the results to console
+    console.log(`Input = knightMove(${start}, ${end})`);
+    console.log(
+      `You made it in ${finalPath.length - 1} moves!  Here's your path:`,
+      finalPath
+    );
+  }
+
+  if (typeof finalPath === "string" || finalPath instanceof String) {
+    // Print the failure message
+    console.log(`Error! ${finalPath}`);
+  }
+}
+
+// codeDriver([3, 3], [4, 3]);
+codeDriver([5, 7], [3, 2]);
+codeDriver([7, 7], [0, 1]);
+codeDriver([8, 8], [9, 9]); // Expected: "Error! No path found"
